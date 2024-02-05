@@ -19,13 +19,16 @@ from recipe.serializers import IngredientSerializer
 
 INGREDIENT_URL = reverse("recipe:ingredient-list")
 
+
 def create_user(email="user@example.com", password="admin123"):
     """Create and return a new user."""
     return get_user_model().objects.create_user(email, password)
 
+
 def detail_url(ingredient_id):
     """Create and return a ingredient detail URL."""
     return reverse("recipe:ingredient-detail", args=[ingredient_id])
+
 
 class PublicIngredientsApiTests(TestCase):
     """Test unauthenticated API requests."""
@@ -38,6 +41,7 @@ class PublicIngredientsApiTests(TestCase):
         res = self.client .get(INGREDIENT_URL)
 
         self.assertEqual(res.status_code, status.HTTP_401_UNAUTHORIZED)
+
 
 class PrivateIngredientsApiTests(TestCase):
     """Test authenticated API requests."""
@@ -76,7 +80,7 @@ class PrivateIngredientsApiTests(TestCase):
         """Test updating a ingredient."""
         ingredient = Ingredient.objects.create(user=self.user, name="Salt")
 
-        paylaod = {"name":"pepper"}
+        paylaod = {"name": "pepper"}
         url = detail_url(ingredient.id)
         res = self.client.patch(url, paylaod)
 
